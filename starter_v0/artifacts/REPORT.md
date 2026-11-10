@@ -69,20 +69,9 @@ Use actual failures from `results[*].result.failures`.
 
 List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn).
 
-Run: `runs/v3_B_group_openrouter_20261110T154023741619.json` (v3, suite group, 10/10 pass, case_accuracy = 1.0; G06 trong run là bản cũ, cần chạy lại sau khi đổi case)
-
 | Case ID | What It Tests | Expected Tool/Behavior | Result |
 |---|---|---|---|
-| G01_extract_urls_deduplicates_links | Single turn: trích xuất và bỏ link trùng trong đoạn văn (`wrong_tool`) | `extract_urls(text=<đoạn văn>)` | PASS |
-| G02_web_news_today_routing | Single turn: tin tức hôm nay phải dùng `topic=news`, `timeframe=day` (`wrong_arg_value`) | `lookup(query="AI", topic="news", timeframe="day")` | PASS |
-| G03_missing_account_asks_user | Single turn: yêu cầu tweet nhưng thiếu tài khoản (`missing_info`) | `clarify(response_type="text")`, không đoán tài khoản | PASS |
-| G04_out_of_scope_coding_request | Single turn: yêu cầu viết code Python, ngoài phạm vi agent (`out_of_scope`) | Không gọi tool | PASS |
-| G06_wikipedia_definition | Single turn: tóm tắt Wikipedia tiếng Việt, phải chọn `wiki` thay vì `lookup` (`wrong_tool`) | `wiki(title="OpenAI", lang="vi")` | Chưa chạy (run file là bản G06 cũ `G06_social_search_keyword`, PASS) |
-| G05_multiturn_account_and_limit | Multi turn: thiếu tài khoản, user bổ sung "Elon Musk" rồi giới hạn 3 tweet (`wrong_arg_value`) | `timeline(screenname="elonmusk", limit=3)` | PASS |
-| G07_multiturn_clarify_then_fetch_url | Multi turn: hỏi lại khi chưa có link, sau đó đọc đúng URL user đưa (`missing_info`) | `fetch(url="https://example.com/research")` | PASS |
-| G08_multiturn_correct_news_timeframe | Multi turn: user đổi từ "tuần này" sang "hôm nay" (`wrong_arg_value`) | `lookup(query="robotics", topic="news", timeframe="day")` | PASS |
-| G09_multiturn_switch_social_to_web | Multi turn: user bỏ Twitter, chuyển sang tin tức web (`wrong_tool`) | `lookup(query="OpenAI", topic="news", timeframe="day")` | PASS |
-| G10_multiturn_social_search_top | Multi turn: tìm bài đăng trên X rồi yêu cầu bài nổi bật nhất (`wrong_arg_value`) | `social_search(query="AI", search_type="Top")` | PASS |
+|  |  |  |  |
 
 ## B4. Live Chat Evidence
 
