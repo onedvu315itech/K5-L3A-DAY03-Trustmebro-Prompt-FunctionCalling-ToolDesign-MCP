@@ -56,7 +56,7 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 |---|---|---|---:|---:|---|
 | v0 | baseline |  |  |  |  |
 | v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20); routing 1.0, argument 0.90, multiturn 0.833. R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
-| v2 |  |  |  |  |  |
+| v2 |system_prompt.md, tools.yaml  |àm rõ cách chọn giữa lookup và social_search, quy ước arguments, xác nhận yes_no trước khi gửi, và giữ/chuẩn hóa thông tin tài khoản qua nhiều lượt. Kỳ vọng sửa R12, M02, M03 và giữ limit ở M05.  | case_accuracy=0.90 (18/20) |case_accuracy=0.95 (19/20); routing=0.95, argument=0.95, multiturn=1.0. Còn lỗi R10: thiếu tên tài khoản nhưng agent đoán sama  |uns/v2_B_base_openrouter_20261110T124601179205.json  |
 | v3 |  |  |  |  |  |
 
 ## B2. Failure Analysis
