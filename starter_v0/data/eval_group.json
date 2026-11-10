@@ -80,17 +80,17 @@
       }
     },
     {
-      "id": "G06_wikipedia_definition",
+      "id": "G06_social_search_keyword",
       "phase": "B",
-      "query": "Tóm tắt Wikipedia tiếng Việt về OpenAI.",
+      "query": "Tìm các bài đăng trên Twitter nói về AI.",
       "failure_type": "wrong_tool",
       "expect": {
         "tool_calls": [
-          {"name": "wiki", "args": {"title": "OpenAI", "lang": "vi"}}
+          {"name": "social_search", "args": {"query": "AI"}}
         ]
       },
       "metadata": {
-        "what_it_tests": "Routes a Wikipedia background-summary request to wiki and passes the article title and requested language."
+        "what_it_tests": "Uses social_search for keyword-based X posts and keeps the query to the core topic."
       }
     },
     {

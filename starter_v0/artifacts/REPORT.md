@@ -69,9 +69,20 @@ Use actual failures from `results[*].result.failures`.
 
 List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn).
 
+Run: `runs/v3_B_group_openrouter_20261110T154023741619.json` (v3, suite group, 10/10 pass).
+
 | Case ID | What It Tests | Expected Tool/Behavior | Result |
 |---|---|---|---|
-|  |  |  |  |
+| G01_extract_urls_deduplicates_links | Single turn: trích xuất và bỏ link trùng, không fetch link (`wrong_tool`) | `extract_urls(text=<đoạn văn>)` | PASS |
+| G02_web_news_today_routing | Single turn: tin tức hôm nay dùng `topic=news`, `timeframe=day` (`wrong_arg_value`) | `lookup(query="AI", topic="news", timeframe="day")` | PASS |
+| G03_missing_account_asks_user | Single turn: thiếu tài khoản thì hỏi lại, không đoán handle (`missing_info`) | `clarify(response_type="text")` | PASS |
+| G04_out_of_scope_coding_request | Single turn: yêu cầu viết code Python, ngoài phạm vi (`out_of_scope`) | Không gọi tool | PASS |
+| G05_multiturn_account_and_limit | Multi turn: giữ tài khoản qua các lượt và dùng limit 3 user sửa (`wrong_arg_value`) | `timeline(screenname="elonmusk", limit=3)` | PASS |
+| G06_social_search_keyword | Single turn: tìm bài đăng theo từ khóa trên X, giữ query ngắn (`wrong_tool`) | `social_search(query="AI")` | PASS |
+| G07_multiturn_clarify_then_fetch_url | Multi turn: hỏi link còn thiếu, rồi fetch đúng URL user đưa (`missing_info`) | `fetch(url="https://example.com/research")` | PASS |
+| G08_multiturn_correct_news_timeframe | Multi turn: đổi timeframe từ tuần sang ngày, giữ chủ đề robotics (`wrong_arg_value`) | `lookup(query="robotics", topic="news", timeframe="day")` | PASS |
+| G09_multiturn_switch_social_to_web | Multi turn: chuyển từ Twitter sang tin tức web, giữ chủ đề OpenAI (`wrong_tool`) | `lookup(query="OpenAI", topic="news", timeframe="day")` | PASS |
+| G10_multiturn_social_search_top | Multi turn: giữ query AI, đổi `search_type` sang Top khi xin bài nổi bật (`wrong_arg_value`) | `social_search(query="AI", search_type="Top")` | PASS |
 
 ## B4. Live Chat Evidence
 
