@@ -6,43 +6,43 @@
 
 ## Team
 
-- Team:
-- Members:
-- Provider/model:
+- Team: Trustmebro
+- Members: [TEAM.md](./../../TEAM.md)
+- Provider/model: OpenRouter
 
 ---
 
 # PHẦN A — Giới thiệu agent
 
 ## A1. Agent này làm được gì
+Trustmebro là Research Agent được dùng để xem tweet của một tài khoản, tìm bài đăng theo chủ đề, tra cứu web, đọc nội dung URL, hỏi lại người dùng khi thiếu thông tin và gửi tin nhắn sau khi người dùng xác nhận yes/no.
 
-> 1–2 câu mô tả agent dùng để làm gì (cho team khác hiểu nhanh).
-
-Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc URL, tổng hợp thành digest, và gửi lên Telegram khi được xác nhận."
-
-**Link dùng thử (deploy):**
-
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README. Nếu deploy Vercel/Streamlit Cloud thì dán link đó.
->
-> URL: 
+**Link dùng thử:** [trustmebro-prompt.vercel.app](https://trustmebro-prompt.vercel.app/)
 
 ## A2. Tool agent có
 
-> Liệt kê các tool agent đang dùng (gồm tool mới nhóm tự thêm). Mỗi tool 1 dòng: tên + làm được gì.
-
 | Tên tool | Làm được gì | Tool mới nhóm thêm? |
 |---|---|---|
-| clarify | hỏi lại người dùng khi thiếu thông tin | không |
-|  |  |  |
-|  |  |  |
+| clarify | hỏi lại người dùng khi thiếu thông tin (`text`), xin xác nhận yes/no trước khi gửi/đăng (`yes_no`), hoặc cho chọn từ danh sách (`choice`) | ❌ |
+| timeline | lấy các bài đăng gần đây của một tài khoản X cụ thể (handle không có @, có `limit`) | ❌ |
+| social_search | tìm bài đăng/thảo luận trên X theo từ khóa (`Latest` hoặc `Top`) | ❌ |
+| lookup | tìm thông tin/tin tức trên web, có `topic` (general/news) và `timeframe` (day/week/month/year) | ❌ |
+| fetch | đọc và trích nội dung từ một URL người dùng đưa | ❌ |
+| format | định dạng các mục nghiên cứu đã thu thập thành digest Markdown (brief, sections, bullets, thread, daily_ai_vn) | ❌ |
+| send | gửi văn bản tới Telegram đã cấu hình, chỉ sau khi người dùng xác nhận (`confirmed=true`) | ❌ |
+| policy | tìm trong tài liệu chính sách nội bộ của lab (AI, trích dẫn, quyền riêng tư, xuất bản, dùng tool) | ❌ |
+| papers | tìm bài báo trên arXiv theo chủ đề | ❌ |
+| paper_text | tải và trích văn bản từ một bài arXiv đã biết ID/URL | ❌ |
+| extract_urls | tách các link HTTP/HTTPS từ đoạn văn bản, bỏ trùng, không mở hay kiểm tra link | ✅ |
+| wiki | lấy tóm tắt Wikipedia cho một khái niệm/người/tổ chức theo tên bài | ✅ |
 
 ## A3. Câu hỏi mẫu để thử
 
-> 3–5 câu hỏi/yêu cầu mẫu để team khác tự thử agent ngay.
-
-1.
-2.
-3.
+1. Dạo này Andrej Karpathy đang đăng gì? Cho mình xem 3 bài gần nhất.
+2. Cộng đồng trên X đang tranh cãi gì về robotics? Ưu tiên bài được quan tâm nhiều nhất.
+3. Tin công nghệ tuần này có gì đáng chú ý? Gom lại thành bản tin dạng gạch đầu dòng giúp mình.
+4. Transformer là gì? Cho mình định nghĩa ngắn rồi tìm vài bài báo arXiv gần đây về chủ đề này.
+5. Gửi bản tin vừa rồi lên Telegram nhé.
 
 ---
 
@@ -50,14 +50,12 @@ Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc 
 
 ## B1. Version Evidence
 
-Fill from `artifacts/version_log.csv` and `runs/*.json`.
-
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
 | v0 | baseline |  |  |  |  |
-| v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20); routing 1.0, argument 0.90, multiturn 0.833. R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
-| v2 |system_prompt.md, tools.yaml  |àm rõ cách chọn giữa lookup và social_search, quy ước arguments, xác nhận yes_no trước khi gửi, và giữ/chuẩn hóa thông tin tài khoản qua nhiều lượt. Kỳ vọng sửa R12, M02, M03 và giữ limit ở M05.  | case_accuracy=0.90 (18/20) |case_accuracy=0.95 (19/20); routing=0.95, argument=0.95, multiturn=1.0. Còn lỗi R10: thiếu tên tài khoản nhưng agent đoán sama  |uns/v2_B_base_openrouter_20261110T124601179205.json  |
-| v3 |  |  |  |  |  |
+| v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20) </br>R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
+| v2 |system_prompt.md, tools.yaml  | Làm rõ cách chọn giữa lookup và social_search, quy ước arguments, xác nhận yes_no trước khi gửi, và giữ/chuẩn hóa thông tin tài khoản qua nhiều lượt. Kỳ vọng sửa R12, M02, M03 và giữ limit ở M05. | case_accuracy=0.90 (18/20) |case_accuracy=0.95 (19/20); routing=0.95, argument=0.95, multiturn=1.0 </br>Còn lỗi R10: thiếu tên tài khoản nhưng agent đoán sama  | runs/v2_B_base_openrouter_20261110T124601179205.json  |
+| v3 | system_prompt.md | Bổ sung vào system_prompt.md các rule còn thiếu của v2: hỏi lại khi yêu cầu “mới nhất” chưa rõ nguồn hoặc tài khoản (không tự đoán người), tin tức luôn qua lookup còn kết quả social chỉ là tham khảo chưa xác minh, chỉ xử lý yêu cầu mới nhất, thêm chống prompt injection và định dạng đầu ra có nguồn kèm ngày. Kỳ vọng sửa lỗi R10 còn lại của v2 và giữ các chỉ số khác không giảm. | case_accuracy 0.95 (19/20) | case_accuracy 0.90 (20/20) </br>Còn lỗi M02: Ngoài tool `look_up` còn sử dụng thêm tool `social_search` | runs/v3_B_base_openrouter_20261110T161602027725.json |
 
 ## B2. Failure Analysis
 
