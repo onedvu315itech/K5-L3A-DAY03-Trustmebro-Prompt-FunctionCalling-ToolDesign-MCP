@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f6;
+  --foreground: #292825;
+  --muted: #85837d;
+  --line: #e9e7e1;
+  --sidebar: #f4f3ef;
+  --accent: #d97757;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+button, textarea { font: inherit; }
+button { color: inherit; }
+
+.app-shell { display: flex; min-height: 100vh; background: var(--background); }
+.sidebar {
+  width: 258px;
+  flex: 0 0 258px;
+  min-height: 100vh;
+  background: var(--sidebar);
+  border-right: 1px solid #eeece6;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 13px 12px;
+}
+.sidebar-top { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 25px 10px; }
+.brand, .mobile-brand { display: flex; align-items: center; gap: 9px; color: #292825; text-decoration: none; font-family: Georgia, "Times New Roman", serif; font-size: 22px; letter-spacing: -1.1px; font-weight: 600; }
+.brand-mark { color: var(--accent); font-size: 24px; line-height: 1; font-family: Arial, sans-serif; font-weight: 400; }
+.new-chat { display: flex; align-items: center; gap: 10px; height: 39px; border: 1px solid #e5e3dd; border-radius: 9px; background: #fbfaf7; padding: 0 10px; text-align: left; cursor: pointer; font-weight: 500; }
+.new-chat:hover { background: #fff; border-color: #d8d5ce; }
+.new-chat svg { color: #706e68; }
+.shortcut { margin-left: auto; font-size: 11px; color: #9a9892; letter-spacing: .02em; }
+
+.workspace { position: relative; flex: 1; min-width: 0; min-height: 100vh; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; justify-content: center; height: 62px; padding: 0 29px; position: relative; }
+.model-name { color: #45433e; font-weight: 550; padding: 9px 12px; }
+.mobile-brand { display: none; }
+.conversation-area { width: min(100%, 820px); margin: 0 auto; flex: 1; display: flex; flex-direction: column; padding: 0 34px; }
+.conversation { width: 100%; padding: 73px 0 30px; }
+.message { display: flex; gap: 14px; margin-bottom: 31px; align-items: flex-start; }
+.message-user { flex-direction: row-reverse; }
+.assistant-mark { flex: 0 0 28px; padding-top: 1px; color: var(--accent); font-size: 24px; line-height: 28px; text-align: center; }
+.user-avatar { flex: 0 0 28px; width: 28px; height: 28px; border-radius: 50%; background: #d9c2aa; color: #5a4436; display: grid; place-items: center; font-family: Georgia, serif; font-size: 12px; }
+.message-body { max-width: 610px; padding-top: 3px; }
+.message-user .message-body { background: #f0efeb; border-radius: 18px; padding: 12px 17px; max-width: 540px; }
+.message-label { color: #4c4a45; font-weight: 600; margin-bottom: 7px; }
+.message p { margin: 0; color: #383732; font-size: 15px; line-height: 1.72; letter-spacing: -.08px; }
+.loading-section { display: flex; align-items: center; gap: 12px; width: fit-content; margin: 2px 0 25px 42px; padding: 12px 15px; border: 1px solid #e9e6df; border-radius: 14px; background: #fffefa; color: #77746d; font-size: 13px; }
+.loading-mark { display: flex; align-items: center; gap: 4px; height: 14px; }
+.loading-mark i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .45; animation: loading-pulse 1.05s ease-in-out infinite; }
+.loading-mark i:nth-child(2) { animation-delay: .15s; }
+.loading-mark i:nth-child(3) { animation-delay: .3s; }
+@keyframes loading-pulse { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .loading-mark i { animation: none; opacity: .8; } }
+.welcome-state { text-align: center; margin: auto 0; padding: 60px 0 130px; }
+.welcome-mark { color: var(--accent); font-size: 39px; line-height: 1; margin-bottom: 23px; }
+.welcome-state h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(27px, 3.3vw, 36px); line-height: 1.2; font-weight: 400; letter-spacing: -1.2px; color: #34332f; }
+.welcome-state p { color: #85837d; margin: 11px 0 0; font-size: 15px; }
+.composer-wrap { width: 100%; margin-top: auto; padding-bottom: 22px; }
+.composer { position: relative; border: 1px solid #e5e2db; border-radius: 16px; background: #fffefa; padding: 15px 13px 10px 18px; box-shadow: 0 5px 22px rgba(60, 54, 43, .045); transition: border-color .18s, box-shadow .18s; }
+.composer:focus-within { border-color: #d7d2c8; box-shadow: 0 7px 24px rgba(60, 54, 43, .07); }
+.composer textarea { display: block; width: 100%; min-height: 49px; max-height: 180px; resize: vertical; border: 0; outline: 0; background: transparent; color: #34332f; font-size: 15px; line-height: 1.55; }
+.composer textarea:disabled { opacity: .65; cursor: wait; }
+.composer textarea::placeholder { color: #999790; }
+.composer-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.composer-model { color: #85837d; font-size: 12px; padding: 0 7px; }
+.send-button { border: 0; border-radius: 8px; display: grid; place-items: center; width: 32px; height: 32px; color: #aaa79f; background: #efeee9; cursor: default; }
+.send-button.ready { color: white; background: #d97757; cursor: pointer; }
+.send-button:disabled { cursor: wait; }
+.send-button.ready:hover { background: #c96545; }
+.composer-note { text-align: center; margin-top: 10px; font-size: 11px; color: #9a9891; }
+.app-footer { height: 38px; display: flex; justify-content: center; align-items: center; gap: 6px; color: #a09e97; font-size: 10px; }
+.app-footer svg { display: none; }
+
+@media (max-width: 760px) {
+  .sidebar { display: none; }
+  .workspace { min-height: 100dvh; }
+  .topbar { height: 57px; justify-content: space-between; padding: 0 17px; }
+  .mobile-brand { display: flex; font-size: 20px; gap: 7px; }
+  .mobile-brand .brand-mark { font-size: 21px; }
+  .model-name { display: none; }
+  .conversation-area { padding: 0 17px; }
+  .conversation { padding-top: 48px; }
+  .message { gap: 10px; margin-bottom: 25px; }
+  .message p { font-size: 14px; }
+  .loading-section { margin-left: 38px; }
+  .message-user .message-body { padding: 10px 13px; }
+  .composer-wrap { padding-bottom: 12px; }
+  .composer { border-radius: 14px; padding: 12px 10px 8px 14px; }
+  .composer textarea { min-height: 45px; }
+  .app-footer { height: 31px; font-size: 9px; }
+}
+
+@media (max-width: 410px) {
+  .composer-note { font-size: 10px; }
+}
