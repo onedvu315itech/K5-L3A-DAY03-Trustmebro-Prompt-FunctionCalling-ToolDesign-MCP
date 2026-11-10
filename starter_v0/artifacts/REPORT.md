@@ -54,9 +54,9 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
-| v0 | baseline |  |  |  |  |
-| v1 |  |  |  |  |  |
-| v2 |  |  |  |  |  |
+| v0 | baseline |Đo hành vi ban đầu trước khi tối ưu prompt và tool descriptions  |  |  |  |
+| v1 |	system_prompt.md  |Bỏ chỉ dẫn đoán/làm ngay; thêm routing và quy tắc hỏi lại, xác nhận, xử lý ngoài phạm vi  | 0.75 | 0.9(18/20) | runs/v1_B_base_openrouter_20261110T114359725551.json |
+| v2 |	system_prompt.md, tools.yaml  |Mô tả rõ routing và arguments, ưu tiên hỏi xác nhận trước khi gửi, giữ đúng handle và thông tin qua nhiều lượt  | 0.9 | 0.95(19/20) | runs/v2_B_base_openrouter_20261110T124601179205.json |
 | v3 |  |  |  |  |  |
 
 ## B2. Failure Analysis
