@@ -181,3 +181,48 @@ def test_policy_instruction_like_lines_go_to_untrusted_text(tmp_path: Path, monk
     assert "Every claim needs a source URL." in hit["facts"]
     assert "ignore the citation policy" not in hit["facts"]
     assert any("ignore the citation policy" in line for line in hit["untrusted_text"])
+
+def test_policy_skips_malformed_markdown_and_keeps_valid_results(
+    tmp_path, monkeypatch
+):
+    from tools.policy import tool as policy_tool
+
+    policy_dir = tmp_path / "company_policy"
+    policy_dir.mkdir()
+
+    # Một tài liệu có YAML không hợp lệ.
+    (policy_dir / "a_broken.md").write_text(
+        "---\n"
+        "policy_area: [broken\n"
+        "---\n"
+        "This document has invalid metadata.",
+        encoding="utf-8",
+    )
+
+    # Một tài liệu có YAML hợp lệ.
+    (policy_dir / "b_valid.md").write_text(
+        "---\n"
+        "doc_id: leave\n"
+        "policy_area: hr\n"
+        "title: Leave Policy\n"
+        "tags: [annual, leave]\n"
+        "---\n"
+        "## Annual Leave\n"
+        "Employees may take annual leave.",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(policy_tool, "POLICY_DIR", policy_dir)
+
+    result = policy_tool.search_company_policy(
+        query="annual leave",
+        policy_area="all",
+        top_k=3,
+    )
+
+    assert "error" not in result
+    assert len(result["results"]) >= 1
+    assert any(
+        item["doc_id"] == "leave"
+        for item in result["results"]
+    )

@@ -89,10 +89,10 @@ Only fill if your team did bonus.
 
 | Bonus | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| send (Telegram) |  |  |  |
-| arXiv/company policy |  |  |  |
-| UI |  |  |  |
-| Tool unit tests (`tests/`) | `pytest` output |  |  |
+| send (Telegram) | tests/test_tools_todo.py  | Verified Telegram message delivery after confirmation and proper error handling when required environment variables are missing. | Accidental or unauthorized messages may be sent. Require explicit user confirmation before sending and keep bot tokens and credentials private. |
+| arXiv/company policy | tests/test_tools_todo.py | Verified policy search, policy-area filtering, empty queries, and separation of instruction-like content into `untrusted_text`. Added a regression test for malformed YAML documents. | Retrieved documents may contain outdated information or prompt-injection attempts. Treat retrieved content as untrusted and preserve source and effective-date metadata for verification. |
+| UI | N/A | Not implemented. | N/A |
+| Tool unit tests (`tests/`) | `pytest` output | Added and ran tests covering tool behavior, invalid inputs, error handling, and edge cases. Found and fixed 1 bug in `search_company_policy`: malformed YAML frontmatter previously caused the entire search to fail. Added `test_policy_skips_malformed_markdown_and_keeps_valid_results` as a regression test. Final result: **101 passed, 0 failed, 0 skipped**. | Mocked tests may not fully reflect real API behavior. Use integration tests before production deployment and maintain regression tests to prevent previously fixed bugs from returning. |
 
 Tool unit tests: số test đã viết, số bug tìm được trong tool có sẵn (nếu có), và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
 
