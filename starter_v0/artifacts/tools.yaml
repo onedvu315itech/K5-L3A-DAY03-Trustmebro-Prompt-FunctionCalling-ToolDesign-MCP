@@ -154,4 +154,16 @@ tools:
         text: {type: string, description: "Text that may contain URLs to extract."}
       required: [text]
 
+  - name: wiki
+    description: >-
+      Fetch the Wikipedia summary for one concept, person, or organization by article title.
+      Use for definitions and background information. Do not use for current news (use lookup
+      with topic=news), social posts (use timeline or social_search), or a specific URL (use fetch).
+    parameters:
+      type: object
+      properties:
+        title: {type: string, description: "Canonical Wikipedia article title, not the full question; for example OpenAI or BERT."}
+        lang: {type: string, default: "en", description: "Wikipedia language code, such as en or vi. Defaults to en."}
+      required: [title]
+
 
