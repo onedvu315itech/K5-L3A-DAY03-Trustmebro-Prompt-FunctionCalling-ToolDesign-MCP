@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Claude — a thoughtful space",
-  description: "A calm space to think, explore, and create with Claude.",
+  title: "Trustmebro — Research Assistant",
+  description: "Explore questions and research with the Trustmebro assistant.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
