@@ -21,8 +21,8 @@ tools:
     description: >-
       Get recent posts from one specific X account. Use when the user asks for posts by a named
       account; do not use for keyword searches across accounts (use lookup). Provide the canonical account handle without @; map Sam Altman to sama and
-                                                                    Andrej Karpathy to karpathy. When the user corrects the account, use the corrected handle
-                                                                    and preserve other values such as limit from earlier turns.
+      Andrej Karpathy to karpathy. When the user corrects the account, use the corrected handle
+      and preserve other values such as limit from earlier turns.
     parameters:
       type: object
       properties:
@@ -33,7 +33,7 @@ tools:
   - name: social_search
     description: >-
       Search X posts by keyword. Use for social media posts and discussions; do not use for web
-      news (use lookup) or posts from one named account (use timeline). Keep query to the core
+      news, original legal information (use lookup) or posts from one named account (use timeline). Keep query to the core
       topic and do not add words such as news, today, or latest.
     parameters:
       type: object
