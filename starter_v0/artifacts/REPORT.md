@@ -55,7 +55,7 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
 | v0 | baseline |  |  |  |  |
-| v1 |  |  |  |  |  |
+| v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20); routing 1.0, argument 0.90, multiturn 0.833. R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
 | v2 |  |  |  |  |  |
 | v3 |  |  |  |  |  |
 
