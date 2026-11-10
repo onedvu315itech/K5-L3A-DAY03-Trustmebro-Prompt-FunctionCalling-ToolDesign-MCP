@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trustmebro web app
 
-## Getting Started
+This directory contains the Next.js chat interface and server-side OpenRouter completion endpoint. The Python research agent at the repository root can also use the deployed endpoint through `DEPLOY_API_URL`.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Set `OPENROUTER_API_KEY` in a local `.env.local` file in this directory before sending a message. `.env.example` lists the supported variables.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This repository also contains Python code at its root, so configure Vercel's **Root Directory** as `deploy/trustmebro-prompt-by-tool`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push this repository to GitHub, GitLab, or Bitbucket and import it in Vercel.
+2. Set **Root Directory** to `deploy/trustmebro-prompt-by-tool`.
+3. Keep the detected Next.js framework and default build settings.
+4. In **Project Settings → Environment Variables**, add `OPENROUTER_API_KEY` with your OpenRouter key for Production. Add it to Preview and Development too if you want those deployments to call the model. Optionally set `OPENROUTER_MODEL` or `OPENROUTER_BASE_URL`.
+5. Deploy, then send a message in the deployed app to confirm it can reach OpenRouter.
+
+Keep the key in Vercel's environment settings or in a local `.env.local`; never commit either secret-bearing file. Redeploy after changing Vercel environment variables.
+
+You can also use the Vercel CLI from this directory after linking the project:
+
+```bash
+npm install
+vercel
+vercel --prod
+```
+
+To use the deployed completion API from the Python CLI, set `DEPLOY_API_URL` to `https://<your-deployment-domain>/api/complete`, then run `python chat.py --provider openrouter --version v3` from the repository root. The API accepts requests without an `Origin` header (as the Python CLI sends); browser calls from other domains are restricted by the API's CORS allowlist.
