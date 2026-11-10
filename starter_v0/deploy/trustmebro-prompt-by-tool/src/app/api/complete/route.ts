@@ -3,12 +3,10 @@ import { NextResponse } from "next/server";
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 type ToolDefinition = Record<string, unknown>;
 
-const allowedOrigins = new Set(
-  (process.env.ALLOWED_ORIGINS ?? "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean)
-);
+const allowedOrigins = new Set([
+  "https://trustmebro-prompt.vercel.app/",
+  "https://k5-l3-a-day-03-trustmebro-prompt-en.vercel.app/"
+]);
 
 function withCors(response: NextResponse, origin: string | null) {
   if (origin && allowedOrigins.has(origin)) {
