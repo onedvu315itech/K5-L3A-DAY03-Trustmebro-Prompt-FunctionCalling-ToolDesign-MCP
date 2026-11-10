@@ -59,11 +59,17 @@ Trustmebro là Research Agent được dùng để xem tweet của một tài kh
 
 ## B2. Failure Analysis
 
-Use actual failures from `results[*].result.failures`.
-
-| Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
-|---|---|---|---|---|
-|  |  |  |  |  |
+| Version of Prompt | Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
+|---|---|---|---|---|---|
+| v0 | R03_web_news_routing | wrong_tool | lookup(query="AI news today artificial intelligence breakthroughs", topic=news, timeframe=day, max_results=10) | Routing đúng nhưng query nhồi thêm chữ, expected `AI` | v1 system_prompt.md: chỉ giữ query là từ khóa chủ đề chính, không thêm "news", "today", "latest" |
+| v0 | R10_missing_handle | missing_info | timeline(screenname=sama, limit=5) | Thiếu tên tài khoản nhưng agent tự đoán `sama`: thiếu tool call `clarify`, thừa tool call `timeline` | v1 system_prompt.md: thiếu handle/URL/query thì gọi clarify (response_type=text), không gọi tool khác. *Lỗi này xuất hiện lại ở v2 (xem B1)* |
+| v0 | R12_confirm_before_send | wrong_boundary | clarify(response_type=text, hỏi nội dung cần đăng) | Hỏi nội dung trước thay vì xác nhận: response_type expected `yes_no`, got `text` | v1: yêu cầu gửi/đăng phải clarify yes_no trước. *v1 vẫn fail* (xem B1), v2 sửa tiếp: quy tắc gửi ưu tiên hơn thiếu thông tin, ghi vào cả system_prompt.md và tools.yaml |
+| v0 | R13_parallel_web_and_tweets | wrong_tool | lookup(query="AI news today", topic=news, timeframe=day, max_results=5) + social_search(query="AI artificial intelligence", search_type=Latest, limit=5) | Gọi đủ 2 tool nhưng cả hai query đều thừa chữ, expected `AI` | v1 system_prompt.md: giữ query ngắn, chỉ chủ đề chính |
+| v0 | M02_carryover_timeframe | wrong_arg_value | lookup(query="robotics news today", topic=news, timeframe=day, max_results=10) | Carry đúng topic/timeframe nhưng query thừa chữ, expected `robotics` | v1: giữ query ngắn; v2: giữ và chuẩn hóa thông tin qua nhiều lượt |
+| v1 | R12_confirm_before_send | wrong_boundary | clarify(response_type=text, hỏi nội dung cần đăng) | Vẫn hỏi nội dung trước thay vì xác nhận: response_type expected `yes_no`, got `text`. Không cải thiện so với v0 | v2 system_prompt.md + tools.yaml: rule gửi/đăng ưu tiên hơn thiếu thông tin, luôn clarify yes_no trước dù chưa có nội dung, rồi mới gửi với confirmed=true |
+| v1 | M05_correction_limit | wrong_arg_value | timeline(screenname=elonmusk, limit=5) | Sai limit: expected 3, got 5. Handle đúng nhưng không giữ số lượng người dùng sửa ở lượt 2 (regression so với v0) | v2: tools.yaml ghi rõ giữ số lượng đã nêu ở các lượt trước, system_prompt.md ghi rõ khi người dùng sửa tài khoản thì giữ các giá trị khác như limit |
+| v2 | R10_missing_handle | missing_info | timeline(screenname=sama, limit=5) | Thiếu tên tài khoản nhưng agent vẫn đoán `sama`: thiếu tool call `clarify`, thừa tool call `timeline`. R10 đã pass ở v1 nhưng fail lại ở v2 (regression) | v3 system_prompt.md: yêu cầu "mới nhất" chưa rõ nguồn/tài khoản thì clarify trước, không tự chọn người hay tài khoản, handle ngoài danh sách đã biết phải xác nhận |
+| v3 | M02_carryover_timeframe | wrong_arg_value | lookup(query=robotics, topic=news, timeframe=day) + social_search(query=robotics, search_type=Latest) | Gọi thừa `social_search`: lượt cuối chỉ yêu cầu tin hôm nay về robotics nên chỉ cần `lookup`. Lỗi query ở v0 đã hết, nhưng đây là lỗi mới (regression, M02 không fail ở v1 và v2) | |
 
 ## B3. Team Eval Cases
 
