@@ -54,8 +54,8 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
-| v0 | baseline |Đo hành vi ban đầu trước khi tối ưu prompt và tool descriptions  |  |  |  |
-| v1 |	system_prompt.md  |Bỏ chỉ dẫn đoán/làm ngay; thêm routing và quy tắc hỏi lại, xác nhận, xử lý ngoài phạm vi  | 0.75 | 0.9(18/20) | runs/v1_B_base_openrouter_20261110T114359725551.json |
+| v0 | baseline |  |  |  |  |
+| v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20); routing 1.0, argument 0.90, multiturn 0.833. R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
 | v2 |	system_prompt.md, tools.yaml  |Mô tả rõ routing và arguments, ưu tiên hỏi xác nhận trước khi gửi, giữ đúng handle và thông tin qua nhiều lượt  | 0.9 | 0.95(19/20) | runs/v2_B_base_openrouter_20261110T124601179205.json |
 | v3 |  |  |  |  |  |
 

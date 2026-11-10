@@ -142,4 +142,16 @@ tools:
         max_chars: {type: integer, default: 8000, description: "Maximum number of extracted characters to return."}
       required: [arxiv_url]
 
+  - name: extract_urls
+    description: >-
+      Extract HTTP or HTTPS links from text supplied by the user. Use when the user asks to
+      list, collect, or deduplicate URLs in a paragraph or document excerpt. It trims trailing
+      punctuation, removes duplicate URLs while preserving order, and does not open or verify
+      the links. Use fetch to read a URL or lookup to discover web pages.
+    parameters:
+      type: object
+      properties:
+        text: {type: string, description: "Text that may contain URLs to extract."}
+      required: [text]
+
 
