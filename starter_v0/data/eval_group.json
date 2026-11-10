@@ -22,6 +22,145 @@
       "metadata": {
         "what_it_tests": "Routes URL extraction to extract_urls and passes the source text without trying to fetch the links."
       }
+    },
+    {
+      "id": "G02_web_news_today_routing",
+      "phase": "B",
+      "query": "Tin tức AI hôm nay có gì nổi bật?",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "AI", "topic": "news", "timeframe": "day"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Routes current web news to lookup and encodes today as topic=news and timeframe=day."
+      }
+    },
+    {
+      "id": "G03_missing_account_asks_user",
+      "phase": "B",
+      "query": "Tóm tắt 5 tweet mới nhất giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "clarify", "args": {"response_type": "text"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Does not guess an account handle when the user asks for tweets without naming an account."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_coding_request",
+      "phase": "B",
+      "query": "Viết giúp mình một hàm Python tính tổng hai số.",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true},
+      "metadata": {
+        "what_it_tests": "Answers a coding request directly without calling a research tool."
+      }
+    },
+    {
+      "id": "G05_multiturn_account_and_limit",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Lấy tweet mới nhất giúp mình."},
+        {"role": "user", "content": "Của Elon Musk."},
+        {"role": "user", "content": "Chỉ lấy 3 tweet thôi."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "timeline", "args": {"screenname": "elonmusk", "limit": 3}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Carries account context across turns and uses the user's corrected limit of three posts."
+      }
+    },
+    {
+      "id": "G06_social_search_keyword",
+      "phase": "B",
+      "query": "Tìm các bài đăng trên Twitter nói về AI.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "AI"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Uses social_search for keyword-based X posts and keeps the query to the core topic."
+      }
+    },
+    {
+      "id": "G07_multiturn_clarify_then_fetch_url",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tóm tắt bài này giúp mình."},
+        {"role": "user", "content": "https://example.com/research"},
+        {"role": "user", "content": "Chỉ đọc đúng link đó thôi."}
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "fetch", "args": {"url": "https://example.com/research"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Asks for a missing URL, then carries the supplied URL forward and calls fetch."
+      }
+    },
+    {
+      "id": "G08_multiturn_correct_news_timeframe",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tìm tin tức robotics trong tuần này."},
+        {"role": "user", "content": "À, chỉ lấy tin hôm nay thôi."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "robotics", "topic": "news", "timeframe": "day"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Updates timeframe from week to day while retaining the robotics news topic."
+      }
+    },
+    {
+      "id": "G09_multiturn_switch_social_to_web",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Mọi người đang nói gì về OpenAI trên Twitter?"},
+        {"role": "user", "content": "Bỏ Twitter, tìm tin tức web hôm nay về chủ đề đó."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "OpenAI", "topic": "news", "timeframe": "day"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Switches from social_search to web news lookup and carries OpenAI forward."
+      }
+    },
+    {
+      "id": "G10_multiturn_social_search_top",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tìm bài đăng về AI trên X."},
+        {"role": "user", "content": "Cho mình các bài nổi bật nhất."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "AI", "search_type": "Top"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Carries the AI query forward and changes social search_type to Top when asked for popular posts."
+      }
     }
   ]
 }
