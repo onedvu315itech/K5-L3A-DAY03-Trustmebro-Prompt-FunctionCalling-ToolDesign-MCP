@@ -3,10 +3,12 @@ import { NextResponse } from "next/server";
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 type ToolDefinition = Record<string, unknown>;
 
-const allowedOrigins = new Set([
-  "http://172.16.49.113",
-  "http://172.16.48.254",
-]);
+const allowedOrigins = new Set(
+  (process.env.ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+);
 
 function withCors(response: NextResponse, origin: string | null) {
   if (origin && allowedOrigins.has(origin)) {
