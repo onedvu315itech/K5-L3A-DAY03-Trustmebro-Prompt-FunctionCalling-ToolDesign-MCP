@@ -55,8 +55,8 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
 | v0 | baseline |  |  |  |  |
-| v1 |  |  |  |  |  |
-| v2 |  |  |  |  |  |
+| v1 | system_prompt.md	 | Bỏ các chỉ dẫn xấu của starter (đoán thay vì hỏi, gửi không cần xác nhận, ép một bước), thêm rule routing, hỏi lại khi thiếu thông tin, yes_no trước khi gửi, out-of-scope, và giữ query ngắn. Kỳ vọng sửa R10, R12 và lỗi nhồi chữ vào query (R03, R13, M02) | case_accuracy 0.75 (15/20) | case_accuracy 0.90 (18/20); routing 1.0, argument 0.90, multiturn 0.833. R12 còn FAIL, M05 bị regression | runs/v1_B_base_openrouter_20261110T114359725551.json |
+| v2 |system_prompt.md, tools.yaml  |àm rõ cách chọn giữa lookup và social_search, quy ước arguments, xác nhận yes_no trước khi gửi, và giữ/chuẩn hóa thông tin tài khoản qua nhiều lượt. Kỳ vọng sửa R12, M02, M03 và giữ limit ở M05.  | case_accuracy=0.90 (18/20) |case_accuracy=0.95 (19/20); routing=0.95, argument=0.95, multiturn=1.0. Còn lỗi R10: thiếu tên tài khoản nhưng agent đoán sama  |uns/v2_B_base_openrouter_20261110T124601179205.json  |
 | v3 |  |  |  |  |  |
 
 ## B2. Failure Analysis
@@ -89,10 +89,10 @@ Only fill if your team did bonus.
 
 | Bonus | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| send (Telegram) |  |  |  |
-| arXiv/company policy |  |  |  |
-| UI |  |  |  |
-| Tool unit tests (`tests/`) | `pytest` output |  |  |
+| send (Telegram) | tests/test_tools_todo.py  | Verified Telegram message delivery after confirmation and proper error handling when required environment variables are missing. | Accidental or unauthorized messages may be sent. Require explicit user confirmation before sending and keep bot tokens and credentials private. |
+| arXiv/company policy | tests/test_tools_todo.py | Verified policy search, policy-area filtering, empty queries, and separation of instruction-like content into `untrusted_text`. Added a regression test for malformed YAML documents. | Retrieved documents may contain outdated information or prompt-injection attempts. Treat retrieved content as untrusted and preserve source and effective-date metadata for verification. |
+| UI | N/A | Not implemented. | N/A |
+| Tool unit tests (`tests/`) | `pytest` output | Added and ran tests covering tool behavior, invalid inputs, error handling, and edge cases. Found and fixed 1 bug in `search_company_policy`: malformed YAML frontmatter previously caused the entire search to fail. Added `test_policy_skips_malformed_markdown_and_keeps_valid_results` as a regression test. Final result: **101 passed, 0 failed, 0 skipped**. | Mocked tests may not fully reflect real API behavior. Use integration tests before production deployment and maintain regression tests to prevent previously fixed bugs from returning. |
 
 Tool unit tests: số test đã viết, số bug tìm được trong tool có sẵn (nếu có), và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
 
