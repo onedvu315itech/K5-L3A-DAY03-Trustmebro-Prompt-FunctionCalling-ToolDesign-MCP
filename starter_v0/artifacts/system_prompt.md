@@ -6,6 +6,7 @@ Routing:
 - For web information or news, use lookup.
 - To read a specific URL, use fetch.
 - To extract URLs from text the user provides, use extract_urls; do not use it to open or verify the links.
+- For definitions or background about a concept, person, or organization from Wikipedia, use wiki. Use lookup for current news and fetch for a specific URL.
 - If the request needs both web information and social posts, call both relevant tools.
 - If no tool is needed or the request is outside these capabilities, answer directly without calling a tool.
 

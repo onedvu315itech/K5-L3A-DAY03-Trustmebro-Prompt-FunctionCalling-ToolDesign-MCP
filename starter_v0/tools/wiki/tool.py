@@ -11,11 +11,11 @@ from tools._shared import TIMEOUT, domain, err
 
 WIKI_SUMMARY_URL = "https://{lang}.wikipedia.org/api/rest_v1/page/summary/{title}"
 MAX_SUMMARY_CHARS = 1500
-USER_AGENT = "AI20k-Day03-Research-Agent/1.0 (educational lab; contact: local)"
+USER_AGENT = "AI20k-Day03-Research-Agent/1.0 (educational lab)"
 
 
 def wiki_summary(title: str = "", lang: str = "en") -> dict[str, Any]:
-    """Return one Wikipedia article summary in the same item shape as lookup/fetch."""
+    """Fetch one Wikipedia article summary and return it in the research-item format."""
     try:
         clean_title = " ".join(str(title or "").split())
         if not clean_title:
