@@ -5,7 +5,8 @@ type ToolDefinition = Record<string, unknown>;
 
 const allowedOrigins = new Set([
   "https://trustmebro-prompt.vercel.app/",
-  "https://k5-l3-a-day-03-trustmebro-prompt-en.vercel.app/"
+  "https://k5-l3-a-day-03-trustmebro-prompt-en.vercel.app/",
+  "http://localhost:3000",
 ]);
 
 function withCors(response: NextResponse, origin: string | null) {
@@ -24,6 +25,13 @@ export function OPTIONS(request: Request) {
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
+
+  console.log("========== API DEBUG ==========");
+  console.log("Incoming Origin:", origin);
+  console.log("Origin Allowed:", allowedOrigins.has(origin ?? ""));
+  console.log("OpenRouter Key Exists:", !!process.env.OPENROUTER_API_KEY);
+  console.log("================================");
+
   if (origin && !allowedOrigins.has(origin)) {
     return NextResponse.json({ error: "Origin is not allowed." }, { status: 403 });
   }
