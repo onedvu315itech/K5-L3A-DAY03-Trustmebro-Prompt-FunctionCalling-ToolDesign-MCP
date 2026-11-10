@@ -8,8 +8,8 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm:
-- Thành viên và phân công: xem [TEAM.md](../../TEAM.md)
+- Tên nhóm: Trustmebro
+- Thành viên và phân công: 
 - Provider/model dùng cho v0–v3:
 
 ## 2. Mục tiêu và cách tiếp cận — PHẦN A: Giới thiệu agent

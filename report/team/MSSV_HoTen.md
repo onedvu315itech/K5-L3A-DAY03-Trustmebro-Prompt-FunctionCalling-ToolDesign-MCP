@@ -6,7 +6,7 @@ Ví dụ: `20241234_NguyenVanAn.md`.
 
 ## 1. Thông tin thành viên
 
-- Họ tên:
+- Họ tên: 
 - MSSV:
 - Email:
 
