@@ -3,5 +3,25 @@
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_extract_urls_deduplicates_links",
+      "phase": "B",
+      "query": "Trích xuất và bỏ link trùng trong đoạn này: https://example.com/research. Tham khảo https://example.org/paper và https://example.com/research",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "extract_urls",
+            "args": {
+              "text": "https://example.com/research. Tham khảo https://example.org/paper và https://example.com/research"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Routes URL extraction to extract_urls and passes the source text without trying to fetch the links."
+      }
+    }
+  ]
 }
